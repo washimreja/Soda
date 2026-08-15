@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diet Soda | Pure Zero Refreshment</title>
+<meta name="description" content="Experience the crisp, clean taste of Diet Soda. Zero sugar, zero compromise.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Inter:wght@400;500&family=Manrope:wght@400;700&family=Galada&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+<style>
+:root{
+    --bg-color:#0a0a0a;
+    --text-color:#fff;
+    --accent-color:#fff;
+    --muted-color:rgba(255,255,255,.7);
+    --glass-bg:rgba(255,255,255,.05);
+    --glass-border:rgba(255,255,255,.1);
+    --font-main:'Inter',sans-serif;
+    --font-heading:'Galada',cursive;
+    --bg-inner:#0b8a78;
+    --bg-mid:#044e3b;
+    --bg-outer:#011411;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden}
+body{
+    background:radial-gradient(circle at center,var(--bg-inner) 0%,var(--bg-mid) 50%,var(--bg-outer) 100%);
+    color:var(--text-color);
+    font-family:var(--font-main);
+    overflow:hidden;
+    height:100vh;
+    transition:background 1.2s cubic-bezier(.4,0,.2,1);
+}
+body.blue-theme{
+    --bg-inner:#0b4f8a;
+    --bg-mid:#04294e;
+    --bg-outer:#010c14;
+}
+button,a{font:inherit}
+button{appearance:none}
+#bubbles-container{
+    position:fixed;top:0;left:0;width:100%;height:100%;
+    pointer-events:none;z-index:0;overflow:hidden;
+}
+.bubble-img{position:absolute;pointer-events:none}
+@keyframes floatUpImg{
+    0%{transform:translateY(0) translateX(0) rotate(0deg);opacity:0}
+    10%{opacity:.4}
+    90%{opacity:.4}
+    100%{transform:translateY(-110vh) translateX(30px) rotate(360deg);opacity:0}
+}
+.header{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:2rem 4%;position:fixed;top:0;width:100%;z-index:100;
+}
+.logo{
+    display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:1.2rem;
+    font-family:var(--font-heading);letter-spacing:.02em
+}
+.logo svg{width:32px;height:32px}
+.nav{
+    display:flex;gap:.5rem;background:var(--glass-bg);padding:.4rem;
+    border-radius:100px;border:1px solid var(--glass-border)
+}
+.nav.glass{
+    position:relative;background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.2);
+    box-shadow:0 8px 32px rgba(0,0,0,.1),inset 0 0 0 1px rgba(255,255,255,.1);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)
+}
+.nav-item{
+    font-family:'Manrope',sans-serif;color:var(--muted-color);text-decoration:none;
+    font-size:.85rem;font-weight:500;padding:.5rem 1.2rem;border-radius:100px;
+    transition:all .3s ease
+}
+.nav-item:hover,.nav-item.active{background:#fbcfe8;color:#011d17}
+.contact-btn{
+    background:rgba(0,0,0,.5);color:#fff;border:none;padding:.9rem 2rem;
+    border-radius:100px;font-weight:600;font-size:.85rem;cursor:pointer;
+    transition:all .3s ease;box-shadow:none
+}
+.contact-btn:hover{background:rgba(0,0,0,.7);transform:translateY(-2px)}
+.hero{
+    height:100vh;display:flex;align-items:center;justify-content:center;
+    padding:0 4%;padding-top:5rem
+}
+.hero-content{
+    display:flex;justify-content:space-between;align-items:stretch;width:100%;
+    max-width:100%;padding:0;height:100%;position:relative
+}
+.main-title,.side-title{
+    font-family:var(--font-heading);font-size:clamp(5rem,10vw,12rem);
+    line-height:.8;font-weight:400;text-transform:none;white-space:nowrap;
+    color:#fff;letter-spacing:normal
+}
+.outline{color:var(--text-color)}
+.leaves-container{
+    position:absolute;top:0;left:0;width:100%;height:100%;
+    pointer-events:none;z-index:-1;transition:transform .1s ease-out
+}
+.leaf{
+    position:absolute;width:60px;height:60px;pointer-events:none;z-index:-1;
+    filter:drop-shadow(0 5px 15px rgba(0,0,0,.2));opacity:.8
+}
+.l1{top:10%;left:15%}.l2{top:40%;left:80%;width:140px;height:140px;opacity:.4}
+.l3{top:70%;left:75%;width:80px;height:80px}.l4{top:85%;left:20%;width:120px;height:120px;opacity:.3}
+.hero-left{
+    display:flex;flex-direction:column;height:100%;padding:6rem 0;gap:2rem;
+    z-index:100;position:relative
+}
+.description{color:var(--muted-color);font-size:1.1rem;line-height:1.6;max-width:400px}
+.primary-btn{
+    display:flex;align-items:center;gap:1.5rem;background:rgba(0,0,0,.5);color:#fff;
+    border:none;padding:.4rem .4rem .4rem 1.5rem;border-radius:100px;font-weight:700;
+    cursor:pointer;width:fit-content;transition:all .3s ease;box-shadow:none
+}
+.primary-btn:hover{background:rgba(0,0,0,.7);transform:translateY(-3px)}
+.plus-icon{
+    background:#fbcfe8;color:#011d17;width:38px;height:38px;display:flex;
+    align-items:center;justify-content:center;border-radius:50%;font-size:1.4rem;
+    font-weight:900;line-height:1;padding-bottom:2px;border:none
+}
+.award-badge{display:flex;align-items:center;gap:1rem;margin-top:auto}
+.award-icon{
+    width:48px;height:48px;background:var(--glass-bg);border:1px solid var(--glass-border);
+    border-radius:12px;display:flex;align-items:center;justify-content:center
+}
+.award-text{display:flex;flex-direction:column}
+.award-title{font-size:.7rem;letter-spacing:.1em;color:var(--muted-color)}
+.award-subtitle{font-size:.85rem;font-weight:600}
+.berries-container,.berries-container-bg{
+    position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;
+    transition:transform .1s ease-out
+}
+.berries-container{z-index:110}.berries-container-bg{z-index:0}
+.berry{
+    position:absolute;width:120px;height:120px;outline:none;
+    --progress-bar-color:transparent;--poster-color:transparent;
+    filter:drop-shadow(0 10px 20px rgba(0,0,0,.3));
+    transition:transform .8s cubic-bezier(.2,.8,.2,1);
+    pointer-events:none;overflow:visible
+}
+.berry.no-animation{animation:none!important}
+.b1{top:25%;left:30%;width:220px;height:220px}
+.b2{top:60%;left:42%;width:100px;height:100px}
+.b3{top:30%;left:62%;width:250px;height:250px}
+.b4{top:15%;left:48%;width:140px;height:140px}
+.b5{top:75%;left:20%;width:120px;height:120px}
+.b6{top:45%;left:75%;width:180px;height:180px}
+.b7{top:15%;left:40%;width:80px;height:80px;opacity:.7}
+.b8{top:50%;left:55%;width:70px;height:70px;opacity:.6}
+.b9{top:80%;left:35%;width:75px;height:75px;opacity:.7}
+.hero-center{
+    display:flex;justify-content:center;align-items:center;position:absolute;top:0;left:0;
+    width:100%;height:100%;z-index:50;opacity:0;
+    animation:fadeIn 1.5s ease-out .3s forwards,float 6s ease-in-out infinite;
+    pointer-events:none;background:radial-gradient(circle at center,rgba(16,185,129,.1) 0%,transparent 70%)
+}
+@keyframes fadeIn{to{opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+.main-product-3d{
+    width:80vw;height:80vh;outline:none;--progress-bar-color:transparent;--poster-color:transparent;
+    z-index:1;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(25deg);
+    pointer-events:none;will-change:transform,filter
+}
+.main-product-3d[camera-controls]{pointer-events:auto}
+.hero-right{
+    display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;
+    text-align:right;height:100%;padding:6rem 0;z-index:100;width:450px;pointer-events:none;
+    position:relative
+}
+.product-carousel{
+    display:flex;flex-direction:column;gap:1.5rem;align-items:flex-end;pointer-events:auto
+}
+.carousel-cards{display:flex;gap:1rem}
+.card{
+    background:var(--glass-bg);border:1px solid var(--glass-border);padding:1rem;
+    padding-top:5rem;border-radius:28px;display:flex;flex-direction:column;align-items:center;
+    gap:1.5rem;cursor:pointer;transition:all .4s cubic-bezier(.175,.885,.32,1.275);
+    width:135px;position:relative;backdrop-filter:blur(10px);text-align:center
+}
+.card:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.4)}
+.card.active{border-color:#fbcfe8;border-width:1px;background:var(--glass-bg);box-shadow:none}
+.card img{
+    width:140px;height:auto;margin-top:-8rem;filter:drop-shadow(0 20px 35px rgba(0,0,0,.5));
+    transition:transform .5s cubic-bezier(.34,1.56,.64,1)!important;display:block;
+    will-change:transform;pointer-events:none
+}
+.card:hover img{transform:translateY(-30px) rotate(-12deg) scale(1.15)!important}
+.card-info{display:flex;flex-direction:column;font-size:.7rem;width:100%;word-wrap:break-word}
+.card-info span:first-child{font-weight:600}.card-info span:last-child{color:var(--muted-color)}
+.carousel-nav{display:flex;gap:1rem}
+.nav-arrow{
+    background:var(--glass-bg);border:1px solid var(--glass-border);color:#fff;width:36px;height:36px;
+    border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:background .3s
+}
+.nav-arrow:hover{background:rgba(255,255,255,.1)}
+.side-title{align-self:flex-end;text-align:right}
+.transitioning .berry{transition:none}
+#preload{position:fixed;width:1px;height:1px;left:-9999px;top:-9999px;opacity:0;pointer-events:none}
+.hidden-svg{position:absolute;width:0;height:0;overflow:hidden}
+.can-spinning{filter:blur(15px) drop-shadow(0 25px 45px rgba(0,0,0,.45))}
+.hero-left,.hero-right{animation:contentEntry 1s ease-out .15s both}
+@keyframes contentEntry{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:none}}
+.card-switching{pointer-events:none!important}
+@media(max-width:1200px){
+    .header{padding:1.2rem 3%}
+    .nav{gap:.1rem}.nav-item{font-size:.72rem;padding:.45rem .75rem}
+    .contact-btn{padding:.7rem 1rem}
+    .hero{padding:0 3%;padding-top:6rem}
+    .hero-content{align-items:flex-start}
+    .main-product-3d{width:100vw;height:60vh;top:40%;transform:translate(-50%,-50%) rotate(25deg)}
+    .main-title,.side-title{font-size:5rem}
+    .hero-left{padding:8rem 0 2rem}.hero-right{padding:8rem 0 2rem;width:320px}
+    .description{font-size:.9rem;max-width:300px}
+    .card{width:110px;padding-top:4rem}.card img{width:110px;margin-top:-6rem}
+}
+@media(max-width:760px){
+    .header{padding:.9rem 4%;align-items:flex-start}
+    .logo{font-size:1rem}.logo svg{width:26px;height:26px}
+    .nav{position:absolute;top:3.8rem;left:50%;transform:translateX(-50%);width:max-content}
+    .nav-item{font-size:.62rem;padding:.38rem .5rem}
+    .contact-btn{font-size:.7rem;padding:.55rem .85rem}
+    .hero{padding:0 5%;padding-top:6rem}
+    .hero-content{display:block}
+    .hero-left{height:auto;padding:8rem 0 0;gap:1.2rem}
+    .main-title{font-size:clamp(4.5rem,19vw,7rem)}
+    .description{font-size:.78rem;line-height:1.45}
+    .award-badge{display:none}
+    .hero-right{height:auto;padding:0;position:absolute;bottom:1.4rem;right:0;width:100%;align-items:flex-end}
+    .product-carousel{transform:scale(.72);transform-origin:right bottom}
+    .side-title{font-size:clamp(3.5rem,15vw,6rem);margin-top:-2rem}
+    .main-product-3d{width:110vw;height:58vh;top:49%}
+    .berry{transform:scale(.65)}
+    .b3,.b6{opacity:.55}
+}
+@media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+
+<body>
+<div id="bubbles-container"></div>
+
+<header class="header">
+    <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>Soda</span>
+    </div>
+    <nav class="nav glass">
+        <a href="#" class="nav-item active">Home</a>
+        <a href="#" class="nav-item">Ingredients</a>
+        <a href="#" class="nav-item">Taste</a>
+        <a href="#" class="nav-item">Eco</a>
+        <a href="#" class="nav-item">Reviews</a>
+    </nav>
+    <button class="contact-btn" type="button">Contact Us</button>
+</header>
+
+<main class="hero">
+    <div class="hero-content">
+        <div class="leaves-container" aria-hidden="true">
+            <model-viewer class="leaf l1" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/leaves.glb" environment-image="neutral" exposure="1.0" interaction-prompt="none" camera-orbit="45deg 75deg 105%"></model-viewer>
+            <model-viewer class="leaf l2" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/leaves.glb" environment-image="neutral" exposure="1.0" interaction-prompt="none" camera-orbit="-30deg 60deg 105%"></model-viewer>
+            <model-viewer class="leaf l3" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/leaves.glb" environment-image="neutral" exposure="1.0" interaction-prompt="none" camera-orbit="120deg 85deg 105%"></model-viewer>
+            <model-viewer class="leaf l4" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/leaves.glb" environment-image="neutral" exposure="1.0" interaction-prompt="none" camera-orbit="10deg 45deg 105%"></model-viewer>
+        </div>
+
+        <div class="hero-left">
+            <h1 class="main-title large-animation-1">
+                <span class="outline">Pure</span><br>Zero
+            </h1>
+            <p class="description">
+                Unleash the crisp taste of zero sugar. <br>
+                Refreshment redefined in every bubble — <br>
+                all in one sleek design.
+            </p>
+            <div class="cta-group">
+                <button class="primary-btn" type="button">Shop Now <span class="plus-icon">+</span></button>
+            </div>
+            <div class="award-badge">
+                <div class="award-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 15L15 18L19 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="award-text">
+                    <span class="award-title">DESIGN AWARDS</span>
+                    <span class="award-subtitle">PREMIUM BEVERAGE 2025</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="berries-container-bg" aria-hidden="true">
+            <model-viewer class="berry b7" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb" environment-image="neutral" exposure="1.0" interaction-prompt="none" camera-orbit="-20deg 110deg 105%"></model-viewer>
+            <model-viewer class="berry b8" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb" environment-image="neutral" exposure="1.0" interaction-prompt="none" camera-orbit="160deg 45deg 105%"></model-viewer>
+            <model-viewer class="berry b9" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb" environment-image="neutral" exposure="1.0" interaction-prompt="none" camera-orbit="45deg 20deg 105%"></model-viewer>
+        </div>
+
+        <div class="hero-center">
+            <model-viewer id="product-model"
+                src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/deit_soda2.glb"
+                alt="Diet Soda 3D Model"
+                camera-controls disable-zoom shadow-intensity="0"
+                environment-image="neutral" exposure="1.5"
+                interaction-prompt="none" camera-orbit="0deg 90deg 380%"
+                field-of-view="30deg" class="main-product-3d">
+            </model-viewer>
+        </div>
+
+        <div class="berries-container" aria-hidden="true">
+            <model-viewer class="berry b1" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb" environment-image="neutral" exposure="1.2" interaction-prompt="none" camera-orbit="45deg 120deg 105%"></model-viewer>
+            <model-viewer class="berry b2" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb" environment-image="neutral" exposure="1.2" interaction-prompt="none" camera-orbit="-120deg 45deg 105%"></model-viewer>
+            <model-viewer class="berry b3" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb" environment-image="neutral" exposure="1.2" interaction-prompt="none" camera-orbit="200deg 90deg 105%"></model-viewer>
+            <model-viewer class="berry b4" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb" environment-image="neutral" exposure="1.2" interaction-prompt="none" camera-orbit="10deg 20deg 105%"></model-viewer>
+            <model-viewer class="berry b5" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb" environment-image="neutral" exposure="1.2" interaction-prompt="none" camera-orbit="-45deg 160deg 105%"></model-viewer>
+            <model-viewer class="berry b6" src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb" environment-image="neutral" exposure="1.2" interaction-prompt="none" camera-orbit="80deg 75deg 105%"></model-viewer>
+        </div>
+
+        <div class="hero-right">
+            <div class="product-carousel">
+                <div class="carousel-cards">
+                    <div class="card active" data-flavor="classic">
+                        <img src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/Green%20Soda.png" alt="Diet Classic">
+                        <div class="card-info"><span>Diet Classic</span><span>$2.99</span></div>
+                    </div>
+                    <div class="card" data-flavor="blue">
+                        <img src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/Blue%20Soda.png" alt="Zero Lime" style="filter:brightness(.7)">
+                        <div class="card-info"><span>Zero Lime</span><span>$2.99</span></div>
+                    </div>
+                </div>
+                <div class="carousel-nav">
+                    <button class="nav-arrow" type="button" aria-label="Previous flavor">←</button>
+                    <button class="nav-arrow" type="button" aria-label="Next flavor">→</button>
+                </div>
+            </div>
+            <h2 class="side-title large-animation-1">
+                <span class="outline">Refreshingly</span><br>Clean
+            </h2>
+        </div>
+    </div>
+</main>
+
+<svg class="hidden-svg" aria-hidden="true">
+    <filter id="frosted">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="8"/>
+    </filter>
+</svg>
+
+<div id="preload" aria-hidden="true">
+    <img src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/Green%20Soda.png" alt="">
+    <img src="https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/Blue%20Soda.png" alt="">
+</div>
+
+<script>
+(() => {
+    'use strict';
+
+    const ASSETS = {
+        LEAVES:'https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/leaves.glb',
+        CHERRY:'https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/cherry.glb',
+        BLUEBERRY:'https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/blueberry.glb',
+        SODA_CAN:'https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/deit_soda2.glb',
+        GREEN_SODA_IMG:'https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/Green%20Soda.png',
+        BLUE_SODA_IMG:'https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/Blue%20Soda.png',
+        GREEN_BASE_COLOR:'https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/green%20base%20color.jpg',
+        BLUE_BASE_COLOR:'https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/blue%20base%20color.jpg',
+        BUBBLE:'https://api.getlayers.ai/storage/v1/object/public/public/assets/soda-14ff8a788d/bubble.png'
+    };
+
+    const state = {
+        mouse:{x:0,y:0},
+        currentMouse:{x:0,y:0},
+        pointer:{x:-9999,y:-9999},
+        flavor:'classic',
+        switching:false,
+        switchSpin:0,
+        canTexture:null,
+        greenTexture:null,
+        blueTexture:null
+    };
+
+    const product = document.getElementById('product-model');
+    const foreground = document.querySelector('.berries-container');
+    const background = document.querySelector('.berries-container-bg');
+    const leaves = document.querySelector('.leaves-container');
+    const body = document.body;
+    const cards = [...document.querySelectorAll('.card')];
+    const berries = [...document.querySelectorAll('.berry')];
+    const leafEls = [...document.querySelectorAll('.leaf')];
+    const durations = [5,7,6,8,5.5,6.5,9,11,10];
+
+    // Initial random offsets make the models feel alive without changing their authored positions.
+    const berryState = berries.map((el,i) => ({
+        el,
+        i,
+        x:0,y:0,
+        phase:Math.random()*Math.PI*2,
+        drift:durations[i] || 8
+    }));
+
+    function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
+    function lerp(a,b,t){return a+(b-a)*t}
+
+    window.addEventListener('pointermove', e => {
+        state.mouse.x = (e.clientX / window.innerWidth - .5) * 2;
+        state.mouse.y = (e.clientY / window.innerHeight - .5) * 2;
+        state.pointer.x = e.clientX;
+        state.pointer.y = e.clientY;
+    }, {passive:true});
+
+    window.addEventListener('pointerleave', () => {
+        state.pointer.x = -9999;
+        state.pointer.y = -9999;
+    });
+
+    function spawnBubble(){
+        const img = document.createElement('img');
+        img.className = 'bubble-img';
+        img.src = ASSETS.BUBBLE;
+        img.alt = '';
+        const size = 10 + Math.random()*20;
+        const left = Math.random()*100;
+        const duration = 4 + Math.random()*6;
+        const delay = Math.random()*.25;
+        img.style.width = size + 'px';
+        img.style.left = left + '%';
+        img.style.bottom = (-size - 10) + 'px';
+        img.style.opacity = (.2 + Math.random()*.4).toFixed(2);
+        img.style.animation = `floatUpImg ${duration}s linear ${delay}s forwards`;
+        document.getElementById('bubbles-container').appendChild(img);
+        setTimeout(() => img.remove(), (duration + delay + .5)*1000);
+    }
+
+    for(let i=0;i<18;i++) setTimeout(spawnBubble, i*220);
+    setInterval(spawnBubble, 400);
+
+    // Slow independent leaf motion.
+    leafEls.forEach((el,i) => {
+        if (window.gsap) {
+            gsap.to(el,{
+                y:i%2 ? -20 : 20,
+                x:i%2 ? 15 : -15,
+                rotation:i%2 ? -15 : 15,
+                duration:10+i*2,
+                repeat:-1,
+                yoyo:true,
+                ease:'sine.inOut'
+            });
+        }
+    });
+
+    function updateBerryRepulsion(el, i, now){
+        const rect = el.getBoundingClientRect();
+        const cx = rect.left + rect.width/2;
+        const cy = rect.top + rect.height/2;
+        const dx = cx - state.pointer.x;
+        const dy = cy - state.pointer.y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        const radius = 400;
+
+        let forceX = 0, forceY = 0;
+        if(!state.switching && dist < radius){
+            const strength = Math.pow(1 - dist/radius, 2) * 80;
+            const inv = dist > 1 ? 1/dist : 1;
+            forceX = dx * inv * strength;
+            forceY = dy * inv * strength;
+        }
+
+        const targetX = forceX + Math.sin(now/1000/((durations[i]||8)/2) + i) * 6;
+        const targetY = forceY + Math.sin(now/1000/((durations[i]||8)/2) + i) * 15;
+
+        berryState[i].x = lerp(berryState[i].x, targetX, .1);
+        berryState[i].y = lerp(berryState[i].y, targetY, .1);
+
+        el.style.translate = `${berryState[i].x}px ${berryState[i].y}px`;
+    }
+
+    function setBerryModel(el, src){
+        el.setAttribute('src', src);
+    }
+
+    async function warmTextures(){
+        if(!product || !product.createTexture) return;
+        try{
+            state.greenTexture = await product.createTexture(ASSETS.GREEN_BASE_COLOR);
+            state.blueTexture = await product.createTexture(ASSETS.BLUE_BASE_COLOR);
+            applyTexture(state.greenTexture);
+            // Warm the alternate shader path, then restore green.
+            if(state.blueTexture) applyTexture(state.blueTexture);
+            if(state.greenTexture) applyTexture(state.greenTexture);
+        }catch(err){
+            console.warn('Texture preload unavailable:', err);
+        }
+    }
+
+    function applyTexture(texture){
+        if(!texture || !product.model || !product.model.materials) return;
+        product.model.materials.forEach(material => {
+            try{
+                const slot = material.pbrMetallicRoughness.baseColorTexture;
+                if(slot) slot.setTexture(texture);
+            }catch(err){}
+        });
+        state.canTexture = texture;
+    }
+
+    product.addEventListener('load', () => {
+        warmTextures();
+    }, {once:true});
+
+    function morphBackground(isBlue){
+        const target = isBlue
+            ? {'--bg-inner':'#0b4f8a','--bg-mid':'#04294e','--bg-outer':'#010c14'}
+            : {'--bg-inner':'#0b8a78','--bg-mid':'#044e3b','--bg-outer':'#011411'};
+        if(window.gsap){
+            gsap.to(body,{
+                duration:1.5,
+                ease:'power2.inOut',
+                ...Object.fromEntries(Object.entries(target).map(([k,v])=>[k,v]))
+            });
+        }
+        body.classList.toggle('blue-theme', isBlue);
+    }
+
+    function updateActiveCard(flavor){
+        cards.forEach(card => card.classList.toggle('active', card.dataset.flavor === flavor));
+    }
+
+    function switchFlavor(nextFlavor){
+        if(state.switching || nextFlavor === state.flavor) return;
+        state.switching = true;
+        body.classList.add('transitioning');
+        const isBlue = nextFlavor === 'blue';
+        const berryCenterX = window.innerWidth/2;
+        const berryCenterY = window.innerHeight/2;
+
+        updateActiveCard(nextFlavor);
+        morphBackground(isBlue);
+
+        // Berry implode.
+        berries.forEach((el,i)=>{
+            const rect = el.getBoundingClientRect();
+            const dx = berryCenterX - (rect.left + rect.width/2);
+            const dy = berryCenterY - (rect.top + rect.height/2);
+            if(window.gsap){
+                gsap.to(el,{
+                    duration:.5,
+                    x:dx,
+                    y:dy,
+                    scale:.1,
+                    opacity:0,
+                    ease:'power2.in'
+                });
+            }
+        });
+
+        // Can: 360° fast blur, texture swap, then 720° settle.
+        if(window.gsap){
+            gsap.killTweensOf(product);
+            state.switchSpin = 0;
+            gsap.to(state,{
+                duration:.6,
+                switchSpin:360,
+                ease:'power2.in',
+                onUpdate:()=>{
+                    product.style.filter='blur(15px) drop-shadow(0 25px 45px rgba(0,0,0,.45))';
+                }
+            });
+            gsap.delayedCall(.55,()=>{
+                if(isBlue){
+                    if(state.blueTexture) applyTexture(state.blueTexture);
+                    else product.style.setProperty('--fallback-flavor','blue');
+                }else{
+                    if(state.greenTexture) applyTexture(state.greenTexture);
+                }
+                product.style.filter='blur(15px) drop-shadow(0 25px 45px rgba(0,0,0,.45))';
+            });
+            gsap.to(state,{
+                duration:1.5,
+                delay:.6,
+                switchSpin:720,
+                ease:'back.out(.7)',
+                onUpdate:()=>{
+                    product.style.filter='blur(0px) drop-shadow(0 25px 45px rgba(0,0,0,.45))';
+                },
+                onComplete:()=>{
+                    product.style.filter='';
+                    state.switchSpin=0;
+                }
+            });
+        }
+
+        setTimeout(()=>{
+            berries.forEach((el,i)=>{
+                setBerryModel(el, isBlue ? ASSETS.BLUEBERRY : ASSETS.CHERRY);
+                const angle = Math.random()*Math.PI*2;
+                const distance = 60 + Math.random()*180;
+                const x = Math.cos(angle)*distance;
+                const y = Math.sin(angle)*distance;
+                el.classList.add('no-animation');
+                if(window.gsap){
+                    gsap.set(el,{x:0,y:0,scale:.1,opacity:0});
+                    gsap.to(el,{
+                        duration:.9,
+                        x,y,scale:1,opacity:1,
+                        ease:'back.out(1.5)',
+                        delay:i*.025
+                    });
+                }else{
+                    el.style.opacity='1';
+                    el.style.transform=`translate(${x}px,${y}px)`;
+                }
+            });
+        },800);
+
+        setTimeout(()=>{
+            state.flavor=nextFlavor;
+            state.switching=false;
+            body.classList.remove('transitioning');
+            berries.forEach(el=>el.classList.remove('no-animation'));
+        },1800);
+    }
+
+    cards.forEach(card=>{
+        card.addEventListener('click',()=>switchFlavor(card.dataset.flavor));
+    });
+
+    const arrows = document.querySelectorAll('.nav-arrow');
+    arrows[0].addEventListener('click',()=>switchFlavor(state.flavor==='classic'?'blue':'classic'));
+    arrows[1].addEventListener('click',()=>switchFlavor(state.flavor==='classic'?'blue':'classic'));
+
+    document.querySelectorAll('.nav-item').forEach(item=>{
+        item.addEventListener('click',e=>{
+            e.preventDefault();
+            document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+            item.classList.add('active');
+        });
+    });
+
+    document.querySelector('.contact-btn').addEventListener('click',()=>{
+        document.querySelector('.contact-btn').animate(
+            [{transform:'scale(1)'},{transform:'scale(.94)'},{transform:'scale(1)'}],
+            {duration:260,easing:'ease-out'}
+        );
+    });
+
+    document.querySelector('.primary-btn').addEventListener('click',()=>{
+        document.querySelector('.primary-btn').animate(
+            [{transform:'translateY(0)'},{transform:'translateY(-3px)'},{transform:'translateY(0)'}],
+            {duration:300,easing:'ease-out'}
+        );
+    });
+
+    function animationFrame(now){
+        state.currentMouse.x = lerp(state.currentMouse.x,state.mouse.x,.05);
+        state.currentMouse.y = lerp(state.currentMouse.y,state.mouse.y,.05);
+
+        if(product){
+            const orbitX = state.currentMouse.x*40 + state.switchSpin;
+            const orbitY = 90 + state.currentMouse.y*20;
+            product.cameraOrbit = `${orbitX}deg ${orbitY}deg 380%`;
+        }
+
+        foreground.style.transform = `translate(${state.currentMouse.x*60}px,${state.currentMouse.y*60}px)`;
+        background.style.transform = `translate(${state.currentMouse.x*-30}px,${state.currentMouse.y*-30}px)`;
+        leaves.style.transform = `translate(${state.currentMouse.x*-15}px,${state.currentMouse.y*-15}px)`;
+
+        berries.forEach((el,i)=>updateBerryRepulsion(el,i,now));
+        requestAnimationFrame(animationFrame);
+    }
+    requestAnimationFrame(animationFrame);
+
+    // Attempt to warm all berry models without displaying a loader.
+    const hiddenPreload = document.createElement('div');
+    hiddenPreload.style.cssText='position:fixed;left:-10000px;top:-10000px;width:1px;height:1px;opacity:0;pointer-events:none;';
+    [ASSETS.CHERRY,ASSETS.BLUEBERRY,ASSETS.LEAVES].forEach(src=>{
+        const mv=document.createElement('model-viewer');
+        mv.src=src;
+        mv.setAttribute('environment-image','neutral');
+        mv.setAttribute('interaction-prompt','none');
+        hiddenPreload.appendChild(mv);
+    });
+    document.body.appendChild(hiddenPreload);
+})();
+</script>
+</body>
+</html>
